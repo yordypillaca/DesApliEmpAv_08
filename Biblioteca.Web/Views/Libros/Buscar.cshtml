@@ -1,0 +1,50 @@
+@model IEnumerable<Libro>
+
+@{
+    ViewData["Title"] = "Búsqueda de libros";
+    var tituloBusqueda = ViewData["TituloBusqueda"] as string ?? string.Empty;
+}
+
+<h1 class="page-title">Resultados de la búsqueda</h1>
+<p class="text-muted">Título: <strong>@tituloBusqueda</strong></p>
+
+<div class="card card-panel mb-3">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-2">
+            <div class="col-md-6">
+                <input type="text" name="titulo" value="@tituloBusqueda" class="form-control" placeholder="Buscar por título" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Ver listado</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card card-panel">
+    <div class="table-responsive">
+        <table class="table table-biblioteca table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>ISBN</th>
+                    <th>Autor</th>
+                    <th>Ejemplares</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var libro in Model)
+                {
+                    <partial name="_LibroFila" model="libro" />
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted mt-3">No se encontraron libros con ese título.</p>
+}

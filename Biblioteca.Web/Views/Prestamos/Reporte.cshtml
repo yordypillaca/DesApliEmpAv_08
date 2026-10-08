@@ -1,0 +1,72 @@
+@model IEnumerable<PrestamoReporte>
+
+@{
+    ViewData["Title"] = "Reporte de préstamos";
+    var desde = ViewData["Desde"] as string ?? string.Empty;
+    var hasta = ViewData["Hasta"] as string ?? string.Empty;
+}
+
+<h1 class="page-title">Reporte de préstamos</h1>
+
+<div class="card card-panel mb-3">
+    <div class="card-body">
+        <form asp-action="Reporte" method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label" for="desde">Desde</label>
+                <input type="date" id="desde" name="desde" value="@desde" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="hasta">Hasta</label>
+                <input type="date" id="hasta" name="hasta" value="@hasta" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Consultar</button>
+                <a asp-action="Reporte" class="btn btn-outline-secondary">Ver todos</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card card-panel">
+    <div class="table-responsive">
+        <table class="table table-biblioteca table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Socio</th>
+                    <th>Libro</th>
+                    <th>Fecha de préstamo</th>
+                    <th>Fecha límite</th>
+                    <th>Estado</th>
+                    <th>Fecha de devolución</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fila in Model)
+                {
+                    <tr>
+                        <td>@fila.Socio</td>
+                        <td>@fila.Libro</td>
+                        <td>@fila.FechaPrestamo.ToString("dd/MM/yyyy")</td>
+                        <td>@fila.FechaLimite.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            @if (fila.Estado == "Pendiente")
+                            {
+                                <span class="badge badge-pendiente">@fila.Estado</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-devuelto">@fila.Estado</span>
+                            }
+                        </td>
+                        <td>@(fila.FechaDevolucion?.ToString("dd/MM/yyyy") ?? "-")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted mt-3">No hay préstamos en el intervalo seleccionado.</p>
+}

@@ -1,0 +1,37 @@
+@model Libro
+
+@{
+    ViewData["Title"] = "Eliminar libro";
+}
+
+<h1 class="page-title">Eliminar libro</h1>
+
+<div class="col-md-6 px-0">
+    <div class="alert alert-warning py-2 mb-3">
+        ¿Desea eliminar lógicamente este libro? Dejará de aparecer en el listado de activos.
+    </div>
+
+    <div class="card card-panel mb-3">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">@Html.DisplayNameFor(m => m.Titulo)</dt>
+                <dd class="col-sm-8">@Model.Titulo</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(m => m.ISBN)</dt>
+                <dd class="col-sm-8">@Model.ISBN</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(m => m.NombreAutor)</dt>
+                <dd class="col-sm-8">@Model.NombreAutor</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(m => m.Ejemplares)</dt>
+                <dd class="col-sm-8">@Model.Ejemplares</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.LibroId" method="post">
+        <input type="hidden" asp-for="LibroId" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
